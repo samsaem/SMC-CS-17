@@ -1,0 +1,164 @@
+//File: Question26.hla Quiz 2 Question26
+program Question26;
+#include ("stdlib.hhf");
+
+//	Create an HLA Assembly language program that prompts for three integers from the user. 
+//	Create and call a function that determines if the sum of all three values is even and 
+//		then sets DX to one if the sum is even; otherwise, set DX to zero.  
+
+//	In order to receive full credit, after returning back to the caller, 
+//		your function should not change the value of any register other than DX.  
+
+static
+	a: int16;
+	b: int16;
+	c: int16;
+
+////////////////////////////
+// Function sumIsEven
+///////////////////////////
+procedure sumIsEven( value1: int8; value2: int8; value3: int8 ); @nodisplay; @noframe; 
+static	
+	returnAddress: dword;
+	sum: int16;
+begin sumIsEven;
+	
+//entry sequence
+	pop(returnAddress);		
+	pop(c);
+	pop(b);
+	pop(a);
+	push(returnAddress);
+	
+	//AX = a = value1
+	push(AX);
+	mov(a,AX);
+	//BX = b = value2
+	push(BX);
+	mov(b,BX);
+	//CX = c = value3
+	push(CX);
+	mov(c,CX);
+	
+	//stdout.put("a: ", a, nl);
+	//stdout.put("b: ", b, nl);
+	///stdout.put("c: ", c, nl);
+	
+	//DX = sum
+	push(DX);
+	mov(sum,DX);
+	
+	add(AX,DX);
+	add(BX,DX);
+	add(CX,DX);
+	
+	mov(DX,sum);
+	//stdout.put("sum = ", sum);
+	//stdout.put(nl);
+	
+	pop(DX);
+	pop(CX);
+	pop(BX);
+	pop(AX);
+	
+	// bool = result = false
+	mov(0,DX);
+	
+	push(AX);
+	mov(sum,AX);
+	
+	//while (sum > 0)
+	cmp(AX, 0);
+jg aboveZero;
+aboveZero:
+	//sum = sum - 2;
+	dec(AX);
+	dec(AX);
+	mov(AX,sum);
+	//stdout.put("sum - 2 = ", sum, nl);
+	
+subtractTwo:
+	cmp(AX,0);
+jg startSubtracting;
+je subtractTwoDone;
+jl subtractTwoDone;
+startSubtracting:
+	sub(2,AX);
+jmp subtractTwo;
+subtractTwoDone:
+	//stdout.put("AX after subtract 2? = ");
+	//stdout.puti16(AX);
+	//stdout.put(nl);
+
+jmp aboveZeroDone;
+aboveZeroDone:		
+	
+	//if (sum == 0) -- number is even
+	cmp(AH, 0);
+je isZero;
+jmp exitSequence;
+isZero:	
+	//stdout.put("sum from isZero: ", sum);	
+	//stdout.put(nl);
+
+	//result = true = 1
+	mov(1,DX);
+	
+	//stdout.put("result = true = ");
+	//stdout.puti16(DX);
+	//stdout.put(nl);
+jmp exitSequence;
+
+	
+exitSequence:
+	pop(AX);
+	ret();
+
+end sumIsEven;
+
+////////////////////////////// MAIN PROGRAM //////////////////////////////
+
+begin Question26;
+	//value 1
+	stdout.put("Provide a value: ");
+	stdin.get(a);
+	//value 2
+	stdout.put("Provide a value: ");
+	stdin.get(b);
+	//value 3
+	stdout.put("Provide a value: ");
+	stdin.get(c);
+	
+	//push arguments onto the stack
+	push(a);
+	push(b);
+	push(c);
+	
+	//call function
+	call sumIsEven;
+
+	//call pushes the return address onto the stack for ret() to consume later
+	
+	//stdout.put("a in main: ", a, nl);
+	//stdout.put("b in main: ", b, nl);
+	//stdout.put("c in main: ", c, nl);
+	
+	cmp(DX,1); 
+	//stdout.put("DX in main: ");
+	//stdout.puti16(DX);
+	//stdout.put(nl);
+	
+	je isEven;
+	jmp isNotEven;
+	
+isEven:
+	stdout.put("sumIsEven returned true!");
+	stdout.put(nl);
+jmp endQ26;
+isNotEven:
+	stdout.put("sumIsEven returned false!");
+	stdout.put(nl);
+jmp endQ26;
+
+endQ26:
+end Question26;

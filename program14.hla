@@ -1,0 +1,82 @@
+//File: program14.hla Unit 15 strlen Function
+program program14;
+#include ("stdlib.hhf");
+#include( "cs17string.hla");
+
+const
+	nullchar: byte:= 0;
+
+static
+	stringInput: string;
+	stringLength: uns16 := 100; //max number of chars
+	
+////////////////////////////
+// Function strlen
+//return in AL  the number of characters in the string parameter
+//passed by its base address
+///////////////////////////
+procedure strlen( baseStringAddress: dword ); @nodisplay; @noframe; 
+static
+	returnAddress: dword;
+	dAXRegister: word := 0; //preserve AL
+	dEBXRegister: dword := 0; //preserve EBX (base address of array)
+begin strlen;
+	mov(EBX, dEBXRegister);
+	mov(AX, dAXRegister);
+	
+	pop(returnAddress); //return address
+	pop(EBX); //base address of array
+	push(returnAddress); // push back return address
+	
+	//preserve registers
+	push(dEBXRegister);
+	
+	mov(EBX, dEBXRegister);
+	mov(AX, dAXRegister);
+	
+	mov([EBX], CL);
+	mov(0,AL);
+	
+// while (*s != '\0')
+// 		index++
+// 		s++ 
+// return index;
+
+whileLp:
+whileLpTermination:
+	cmp(CL,0);
+jg whileLpBody;
+jle exitSequence;
+whileLpBody:
+	//stdout.put("testing whileLp: ");
+	//stdout.puti8(CL);
+	//stdout.put(nl);
+whileLpIncrement:
+	inc(EBX); //s++
+	inc(AL); //index++
+	mov([EBX],CL);
+jmp whileLp;
+
+exitSequence:
+//restore registers
+	pop(EBX);
+	ret();
+end strlen;
+//***************** MAIN PROGRAM *****************
+begin program14;
+	stdout.put("Feed Me: ");
+	mov(&stringInput, EAX);
+	push(EAX);
+	push(stringLength);
+	call gets;
+
+	stdout.put("The String You Entered: ");
+	mov(&stringInput, EAX);
+	push(EAX);	
+	call puts;
+
+	stdout.put(" Has Length = ");
+	push(EAX);
+	call strlen;
+	stdout.puti8(AL);
+end program14;

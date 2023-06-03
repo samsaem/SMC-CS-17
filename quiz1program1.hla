@@ -1,0 +1,104 @@
+//File: Quiz 1 Program 1.hla 
+program program1;
+#include ("stdlib.hhf");
+
+static;
+	x: int8 := 0; //x
+	y: int8 := 0; //y
+
+begin program1;
+
+//User's input
+//x
+stdout.put ("Feed me: ");
+stdin.get(x);
+
+//y
+stdout.put ("Feed me: ");
+stdin.get(y);
+
+//answer 1 = x + 1 = AH
+mov(x, AH);
+inc(AH); 
+//stdout.put("x+1: ");
+//stdout.puti8(AH);
+//stdout.put(nl);
+
+//answer 2 = x + 2 = BH
+mov(x, BH);
+add(2, BH);
+//stdout.put("x+2: ");
+//stdout.puti8(BH);
+//stdout.put(nl);
+
+//answer 3 = y + 1 = CH
+mov(y, CH);
+inc(CH); 
+//stdout.put("y+1: ");
+//stdout.puti8(CH);
+//stdout.put(nl);
+
+//answer 4 = y + 2 = DH
+mov(y, DH);
+add(2,DH); 
+//stdout.put("y+2: ");
+//stdout.puti8(DH);
+//stdout.put(nl);
+
+//if (answer1 != answer3 && answer1 != answer4)
+firstIf:
+	cmp(AH, CH);
+	cmp(AH, DH);
+//jne = jump if not equal
+jne outputfirstIf;
+jmp endfirstIf;
+//printf( "%d\n", answer1 );
+outputfirstIf:
+	//stdout.put("answer 1: ");
+	stdout.puti8(AH); //answer 1
+	stdout.put(nl);
+endfirstIf:
+
+//if (answer2 != answer3 && answer2 != answer4)
+secondIf:
+	cmp(BH, CH);
+	cmp(BH, DH);
+//jne = jump if not equal
+jne outputsecondIf;
+jmp endsecondIf;
+//printf( "%d\n", answer2 );
+outputsecondIf:
+	//stdout.put("answer 2: ");
+	stdout.puti8(BH); //answer 1
+	stdout.put(nl);
+endsecondIf:
+
+//if (answer3 != answer1 && answer3 != answer2)
+thirdIf:
+	cmp(CH, AH);
+	cmp(CH, BH);
+//jne = jump if not equal
+jne outputthirdIf;
+jmp endthirdIf;
+//printf( "%d\n", answer3 );
+outputthirdIf:
+	//stdout.put("answer 3: ");
+	stdout.puti8(CH); //answer 1
+	stdout.put(nl);
+endthirdIf:
+
+//if (answer4 != answer1 && answer4 != answer2)
+fourthIf:
+	cmp(DH, AH);
+	cmp(DH, BH);
+//jne = jump if not equal
+jne outputfourthIf;
+jmp endfourthIf;
+//printf( "%d\n", answer4 );
+outputfourthIf:
+	//stdout.put("answer 4: ");
+	stdout.puti8(DH); //answer 1
+	stdout.put(nl);
+endfourthIf:
+
+end program1;

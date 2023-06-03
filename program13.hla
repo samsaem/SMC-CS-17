@@ -1,0 +1,66 @@
+//File: program13.hla Unit 14 Rolling Average
+program program13;
+#include ("stdlib.hhf");
+
+//Write an HLA Assembly language program that queries 
+//for numeric values and computes the rolling average of the numbers entered, until the user quits.  
+//The rolling average should be a floating-point value
+
+static
+	data: int32; //input data
+	curAverage: real32; //store current total average
+	curTotal: real32;
+	num: int32:= 0;
+	yayOrNay: byte:= 0;
+
+begin program13;
+
+averageLp:
+	stdout.put("enter data point: ");
+	stdin.get(data);	
+	
+	inc(num); //num++
+calculation:
+	finit();
+	
+	fild(data);
+	fld(curTotal);
+	fadd(); 
+	
+	fstp(curTotal); //put addition result from  to curTotal
+	fld(curTotal); //initialize curTotal again to calculate average
+
+	fld(st0); //copy curTotal to st0
+	fild(num);
+	fld(st1); //copy num to st1
+	
+	fdiv(st1,st0); // curTotal / num = average
+	fstp(curAverage); //put value to curAverage
+	
+output:
+	stdout.put("rolling average = ");
+	stdout.putr32(curAverage, 7, 3);
+	stdout.put(nl);
+	
+moreData:
+	stdout.put("more data? ");
+	stdin.flushInput();
+	stdin.getc(); // stores result in AL
+moreDataCondition:
+	mov( AL, yayOrNay );
+	mov('n',BL);
+	cmp(AL,BL); 
+//if (input character == 'n') -> nayData
+je nayData;
+//else -> back to input
+jmp averageLp;
+
+nayData:
+	stdout.put("final rolling average = ");
+	stdout.putr32(curAverage, 6, 3);
+	stdout.put(nl);
+jmp calculationDone;
+
+calculationDone:
+
+end program13;

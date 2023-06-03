@@ -1,0 +1,135 @@
+//File: program8.hla Unit 11 Program 8 multiplesOfAnother Function
+program program8;
+#include ("stdlib.hhf");
+
+//This function should return into EAX the value 1 if the parameters are multiples of one another; 
+//otherwise, return into EAX the value 0.
+//In order to receive full credit, you should be preventing register corruption
+//by preserving and then restoring the value of any register your function touches
+//This rule applies to every register except for EAX which is being used to pass an answer back to the calling code.
+
+static
+	i: int32 := 0;
+	j: int32 := 0;
+
+////////////////////////////
+// Function multiplesOfAnother
+////////////////////////////
+procedure multiplesOfAnother( i: int32; j : int32 ); @nodisplay; @noframe;
+static	
+	returnAddress: dword;
+	temp: int32;
+	
+begin multiplesOfAnother;
+//entry sequence
+	pop(returnAddress);
+	pop(j); //push from main
+	pop(i); //push from main
+	push(returnAddress);
+
+calculation:
+	//EBX = i, ECX = j, EDX = temp -> pop registers in reverse of this order
+	//i
+	push(EBX); //save EBX on stack
+	mov(i, EBX); //push EBX to stack first then move i to EBX
+	
+	//j
+	push(ECX); //save ECX on stack
+	mov(j, ECX); //push ECX to stack first then move i to EBX
+	
+whichSmaller:
+	cmp(EBX, ECX);
+jl iSmaller; // (i < j)
+jg jSmaller; // (j < i)
+
+iSmaller:
+	//stdout.put("original i value: ", i);
+	//stdout.put(nl);
+	
+	mov(EBX, temp);
+	push(EDX); //save EDX on stack
+	mov(temp, EDX);
+	add(EBX, EDX);
+	mov(EDX, temp);
+	
+	//stdout.put("after multiply i: ", temp);
+	//stdout.put(nl);
+iSmallerTermination:
+	cmp(EDX, ECX); //is value i store in temp mulitple of j?
+je isMultiple;
+jmp notMultiple;
+
+jSmaller:
+	//stdout.put("original j value: ", j);
+	//stdout.put(nl);
+	
+	mov(ECX, temp);
+	push(EDX);
+	mov(temp, EDX);
+	add(ECX, EDX);
+	mov(EDX, temp);
+	
+	//stdout.put("after multiply j: ", temp);
+	//stdout.put(nl);
+jSmallerTermination:
+	cmp(EDX, EBX); //is value j store in temp mulitple of i?
+je isMultiple;
+jmp notMultiple;
+
+isMultiple:
+	mov(1,EAX); //true
+	//stdout.put("EAX = 1");
+jmp endCalculation;
+
+notMultiple:
+	mov(0,EAX); //false
+	//stdout.put("EAX = 0");
+jmp endCalculation;
+
+endCalculation:	
+
+exitSequence:
+	//LIFO
+	//push: EBX, ECX, EDX
+	//pop: EDX, ECX, EBX
+	pop(EDX);
+	pop(ECX);
+	pop(EBX);
+	ret();
+	//DO NOT PLACE ANY CODE AFTER RET
+	//WILL NEVER EXECUTE
+	
+end multiplesOfAnother;
+	
+////////// main program //////////////
+begin program8;
+	//i
+	stdout.put("Feed Me i: ");
+	stdin.get(i);
+	//j
+	stdout.put("Feed Me j: ");
+	stdin.get(j);
+	//push arguments onto the stack
+	push(i);
+	push(j);
+	//call function
+	call multiplesOfAnother;
+	//call pushes the return address onto the stack for ret() to consume later
+	// POP in procedure would be in this order: returnAddress -> j -> i
+	cmp(EAX,1); 
+	je ya;
+	jmp nah;
+	
+ya:
+	stdout.put("EAX = 1");
+	stdout.put(nl);
+jmp endMultiple;
+nah:
+	stdout.put("EAX = 0");
+	stdout.put(nl);
+jmp endMultiple;
+	
+
+endMultiple:
+	
+end program8;

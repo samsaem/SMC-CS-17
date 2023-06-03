@@ -1,0 +1,119 @@
+//File: program12.hla Unit 14 Community College Size
+program program12;
+#include ("stdlib.hhf");
+
+static
+	value: real32; 
+	sizeS: int32;
+	sizeM: int32;
+	sizeL: int32;
+	sizeXL: int32;
+
+////////////////////////////
+// Function ccsize
+//********* Your function should return in AL the Size value *********
+///////////////////////////
+procedure ccsize( ftes : real32 ); @nodisplay; @noframe;
+static
+	returnAddress: dword;
+begin ccsize;
+
+//entry sequence
+	pop(returnAddress);	
+	pop(ftes);
+	
+	push(returnAddress);
+
+// if (value <= 10000) -> size S
+small:
+	finit();
+	fld(ftes);
+	fild(sizeS);
+	fcomp();               // with no args, works with st0 and st1
+	fstsw( ax );           // copy status into ax
+	sahf( );               // copy ax into EFLAGS
+	setb( al );            // al = true if st1 < st0
+	cmp( al, 1 );          // test for true
+	jl smallOutput;           
+	jmp medium;
+	
+// if (10001 <= value <= 14,999) -> size M
+medium:      
+	finit();
+	fld(ftes);
+	fild(sizeM);
+	fcomp();               // with no args, works with st0 and st1
+	fstsw( ax );           // copy status into ax
+	sahf( );               // copy ax into EFLAGS
+	setb( al );            // al = true if st1 < st0
+	cmp( al, 1 );          // test for true
+	jl mediumOutput;           
+	jmp large;     
+
+// if (15,000 <= value <= 19,999) -> size L
+large:
+	finit();
+	fld(ftes);
+	fild(sizeL);
+	fcomp();               // with no args, works with st0 and st1
+	fstsw( ax );           // copy status into ax
+	sahf( );               // copy ax into EFLAGS
+	setb( al );            // al = true if st1 < st0
+	cmp( al, 1 );          // test for true
+	jl largeOutput;           
+	jmp xlarge;
+	
+// if (value >= 20,000) -> size X
+xlarge:
+	finit();
+	fld(ftes);
+	fild(sizeXL);
+	fcomp();               // with no args, works with st0 and st1
+	fstsw( ax );           // copy status into ax
+	sahf( );               // copy ax into EFLAGS
+	setb( al );            // al = true if st1 < st0
+	cmp( al, 1 );          // test for true
+	jmp xlargeOutput;           
+	jl exitSequence;
+
+
+smallOutput:
+  stdout.put("size returned in AL is: S", nl );
+jmp exitSequence;
+
+mediumOutput:
+  stdout.put("size returned in AL is: M", nl );
+jmp exitSequence;	
+
+largeOutput:
+  stdout.put("size returned in AL is: L", nl );
+jmp exitSequence;
+
+xlargeOutput:
+  stdout.put("size returned in AL is: X", nl );
+jmp exitSequence;	
+
+
+exitSequence:
+	ret();
+end ccsize;
+
+////////////////////////////// MAIN PROGRAM //////////////////////////////
+
+begin program12;
+	//size S
+	mov(10000,sizeS);
+	//size M
+	mov(14999,sizeM);
+	//size L
+	mov(19999,sizeL);
+	//size XL
+	mov(20000,sizeXL);
+	
+	stdout.put("gimme FTES: ");
+	stdin.get(value);
+	push(value);
+	call ccsize;
+	
+
+end program12;

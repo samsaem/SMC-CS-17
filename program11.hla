@@ -1,0 +1,88 @@
+//File: program11.hla Unit 12 Program 11 Distance Formula 
+program program11;
+#include ("stdlib.hhf");
+
+static
+	x1: real32;	
+	x2: real32;	
+	y1: real32;	
+	y2: real32;
+	d: real32; //distance
+	x: real32; //testing for x
+	y: real32; //testing for y
+	
+begin program11;
+
+//Input x1
+stdout.put("Gimme a value for x1: ");
+stdin.get(x1);
+
+//Input x2
+stdout.put("Gimme a value for x2: ");
+stdin.get(x2);
+
+//Input y1
+stdout.put("Gimme a value for y1: ");
+stdin.get(y1);
+
+//Input y2
+stdout.put("Gimme a value for y2: ");
+stdin.get(y2);
+
+//distance = sqrt( (x1 - x2)^2 + (y1 - y2)^2 )
+
+//initialize FPU
+finit();
+
+//load x1 onto the stack
+fld(x1);
+//load x2
+fld(x2);
+//x1 - x2
+fsub();
+//duplicate value of (x1 - x2) -> st0
+fld(st0);
+//(x1 - x2)^2 = (st0)^2
+fmul();
+//store result in x for testing
+//fstp(x);
+
+//load y1
+fld(y1);
+//load y2
+fld(y2);
+//y1 - y2
+fsub();
+//duplicate value of (y1 - y2) -> st1
+fld(st0);
+//(y1 - y2)^2 = (st0)^2
+fmul();
+//store result in y for testing
+//fstp(y);
+
+
+//load d
+//fld(d);
+//(x1 - x2)^2 + (y1 - y2)^2
+fadd();
+//sqrt( (x1 - x2)^2 + (y1 - y2)^2 )
+fsqrt();
+//store result in d = distance
+fstp(d);
+
+//stdout.put("Testing x:");
+//stdout.putr32(x, 10, 5);
+//stdout.put(nl);
+
+//stdout.put("Testing y:");
+//stdout.putr32(y, 10, 5);
+//stdout.put(nl);
+
+//stdout.put("Testing d:");
+
+//Output
+stdout.put("The distance between points A and B is ");
+stdout.putr32(d, 7, 5);
+
+
+end program11;

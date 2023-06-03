@@ -1,0 +1,143 @@
+//File: program15.hla Unit 15 Biggest
+program program15;
+#include ("stdlib.hhf");
+
+static
+	xValue: int16:= 0;
+	yValue: int16:= 0;
+	zValue: int16:= 0;
+
+// set all variables to the highest value
+
+
+////////////////////////////
+// Function biggest
+//correctly adjusts each parameter value to hold the 
+//largest value passed to the function
+///////////////////////////
+procedure biggest( var x : int16; var y : int16; var z : int16 ); @nodisplay; @noframe; 
+static
+	returnAddress: dword;	
+	dEBXRegister: dword:= 0; //preserve EBX
+	dECXRegister: dword:= 0; //preserve ECX
+	dEDXRegister: dword:= 0; //preserve EDX
+	
+begin biggest;
+	// preserve registers
+	mov(EBX, dEBXRegister);
+	mov(ECX, dECXRegister);
+	mov(EDX, dEDXRegister);
+	
+	pop(returnAddress); 
+	pop(EBX); // address of zValue
+	pop(ECX); // address of yValue
+	pop(EDX); // address of xValue
+	
+	push(returnAddress);
+	
+	// preserve registers
+	push(dEDXRegister);
+	push(dECXRegister);
+	push(dEBXRegister);
+	
+	mov(EBX, dEBXRegister); //address of zValue
+	mov(ECX, dECXRegister); // address of yValue
+	mov(EDX, dEDXRegister); // address of xValue
+	
+	mov([EBX], AX);
+	mov(AX, BX); // BX = zValue
+	
+	mov([ECX], AX);
+	mov(AX, CX); // CX = yValue
+	
+	mov([EDX], AX);
+	mov(AX, DX); // DX = xValue
+	
+isXbiggerY:
+	cmp(DX,CX);
+	//yes (X > Y) -> isXbiggerZ 
+	jg isXbiggerZ;
+	//no !(X > Y) -> isYbiggerZ
+	jng isYbiggerZ;
+
+isXbiggerZ:
+	cmp(DX, BX);
+	//yes (X > Z) -> output xValue
+	jg xIsBiggest;
+	//no !(X > Z) -> output zValue
+	jng zIsBiggest;
+
+isYbiggerZ:
+	cmp(CX, BX);
+	//yes (Y > Z) -> output yValue
+	jg yIsBiggest;
+	//no !(Y > Z) -> output zValue
+	jng zIsBiggest;	
+	
+	// | EDX = x | ECX = y | EBX = z |
+
+xIsBiggest:
+	mov(dECXRegister, ECX); // Y address
+	mov(DX, AX);
+	mov(AX,[ECX]); 
+	
+	mov(dEBXRegister, EBX); // Z address
+	mov(DX, AX);
+	mov(AX,[EBX]);
+jmp exitFunc;
+
+yIsBiggest:	
+	mov(dEDXRegister, EDX); // X address
+	mov(CX, AX);
+	mov(AX,[EDX]);
+	
+	mov(dEBXRegister, EBX); // Z address
+	mov(CX, AX);
+	mov(AX,[EBX]);
+jmp exitFunc;
+	
+zIsBiggest:	
+	mov(dEDXRegister, EDX); // X address
+	mov(BX, AX);
+	mov(AX,[EDX]);
+	
+	mov(dECXRegister, ECX); // Y address
+	mov(BX, AX);
+	mov(AX,[ECX]); 
+jmp exitFunc;
+
+exitFunc:
+//transfer control
+	pop(EBX);
+	pop(ECX);
+	pop(EDX);
+	ret();
+
+end biggest;
+
+// ****************************** MAIN PROGRAM ******************************
+begin program15;
+
+	stdout.put("Gimme X: ");
+	stdin.get(xValue);
+	
+	stdout.put("Gimme Y: ");
+	stdin.get(yValue);
+	
+	stdout.put("Gimme Z: ");
+	stdin.get(zValue);
+	
+	//get address of x, y, z
+	lea(EAX, xValue); //get address of X
+	push(EAX);
+	lea(EAX, yValue); //get address of y
+	push(EAX);
+	lea(EAX, zValue); //get address of z
+	push(EAX);
+	call biggest;
+
+	stdout.put("X: ", xValue, nl);
+	stdout.put("Y: ", yValue, nl);
+	stdout.put("Z: ", zValue, nl);
+
+end program15;

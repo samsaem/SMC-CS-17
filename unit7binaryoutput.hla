@@ -1,0 +1,114 @@
+//File: unit7binaryoutput.hla Unit 7 Program 3 Binary Output
+program unit7binaryoutput;
+#include ("stdlib.hhf");
+static
+	value: int8 := 0;
+
+begin unit7binaryoutput;
+
+//User's input
+stdout.put ("Gimme a decimal value to print: ");
+//Value contains user's input
+stdin.get (value);
+
+//Print
+stdout.put(value, " is: ");
+
+//FIRST BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the left into the carry bit
+shl (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+
+//SECOND BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the left into the carry bit
+shl (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+
+//THIRD BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the left into the carry bit
+shl (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+
+//FOURTH BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the left into the carry bit
+shl (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+stdout.put ("_");
+
+//FIFTH BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the right into the carry bit
+shr (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+
+//SIXTH BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the right into the carry bit
+shr (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+
+//SEVENTH BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the left into the carry bit
+shr (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+
+//EIGHTH BIT
+//Put value inside BH -> BH contains value of int8 value
+mov (value, BH);
+//shift 1 to the right into the carry bit
+shr (1, BH);
+//put lower eight EFLAG bits into register AH
+lahf();
+//mask out all bits in AH but carry bit
+and( %0000_0001, AH );
+//Print the bit out
+stdout.puti8(AH);
+
+end unit7binaryoutput;

@@ -1,0 +1,53 @@
+// pi a b plus 3 c squared Template Solution For CS 17 Final 
+// CS 17 Students must use this template. 
+// Please look at the TODO: notes below 
+
+program FPUProgram;
+#include( "stdlib.hhf" ); 
+static
+
+	a: real32 := 0; 
+	b: real32 := 0; 
+	c: real32 := 0;
+	answer: real32 := 0;
+
+begin FPUProgram ;
+
+	stdout.put("Gimme a:" ); 
+	stdin.get(a); 
+	stdout.put("Gimme b:" ); 
+	stdin.get(b);
+	stdout.put("Gimme c:" );
+	stdin.get(c);
+
+// TODO: write FPU instructions to calculate the desired value
+// TODO: store that value into the variable answer
+
+	// (pi * a * b) + (3 * c^2) = answer
+	
+	finit(); //initialize FPU
+	
+	fldpi();
+	fld(a);
+	fmul(); // pi * a
+	
+	fld(b);
+	fmul(); // (pi * a * b)
+// --------------------------------------	
+	fld(3.0); 	
+	fld(c);
+	fmul(); // 3 * c
+	fld(c);
+	fmul(); // 3 * c^2
+	
+	fadd(); // (pi * a * b) + (3 * c^2)
+	
+	fstp(answer); //store in variable answer
+
+	stdout.put( "after calculating pi a b plus 3 c squared answer=" );
+// if this line fails because you are using HLA 2.16, comment it out and use the next line instead
+	stdout.putr32( answer, 10, 3 );  
+// stdout.putr32( answer, 10, 3, ' ' );
+	stdout.newln();
+
+end FPUProgram ;

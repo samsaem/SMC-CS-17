@@ -1,0 +1,12 @@
+//File: unit6favoriteDay.hla Unit 6 Program 1 Favorite Day
+program unit6favoriteDay;
+#include ("stdlib.hhf" );
+
+begin unit6favoriteDay;
+	stdout.put ( " F F F F  R R R R  I  D D D    A A     Y   Y ", nl );
+	stdout.put ( " F        R   R    I  D    D   A  A     Y Y ", nl );
+	stdout.put ( " F F F F  R R      I  D     D  A A A     Y ", nl );
+	stdout.put ( " F        R   R    I  D    D   A    A    Y ", nl );
+	stdout.put ( " F        R     R  I  D D D    A     A   Y ", nl );
+
+end unit6favoriteDay;

@@ -1,0 +1,64 @@
+//File: Question25.hla Quiz 2 Question25
+program Question25;
+#include ("stdlib.hhf");
+
+//Assuming you have declared and initialized x and y as two real32 variables, 
+//please write the FPU logic which would calculate the following formula:
+//sqrt((10 * x^2 + 5 * y^3)) - (20.8 * xy)
+
+static
+	x: real32;
+	y: real32;
+	r: real32;
+begin Question25;
+
+//Input x
+stdout.put("Value for x: ");
+stdin.get(x);
+
+//Input y
+stdout.put("Value for y: ");
+stdin.get(y);
+
+////////////////////////////////////////////
+
+//initialize FPU
+finit();
+
+//10 * x^2
+fld(10.0); //load 10 onto the stack
+fld(x); //load x onto the stack
+fmul(); //10 * x
+fld(x);
+fmul(); //10 * x^2
+
+//5 * y^3
+fld(5.0); //load 5
+fld(y); //load y
+fmul(); // 5 * y
+fld(y);
+fmul(); // 5 * y^2
+fld(y);
+fmul(); // 5 * y^3
+
+
+fadd(); //( 10 * x^2 + 5 * y^3 )
+fsqrt(); // sqrt( 10 * x^2 + 5 * y^3 )
+
+fld(20.8); //load 20.8
+fld(x);
+fmul();
+fld(y);
+fmul();
+
+fsub(); // sqrt((10 * x^2 + 5 * y^3)) - (20.8 * xy)
+
+//store result
+fstp(r);
+
+//Output
+stdout.put("Result: ");
+stdout.putr32(r, 10, 5);
+stdout.put(nl);
+
+end Question25;

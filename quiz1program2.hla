@@ -1,0 +1,112 @@
+//File: Quiz 1 Program 2.hla 
+program program2;
+#include ("stdlib.hhf");
+
+static;
+	x: int8 := 0; //x
+	y: int8 := 0; //y
+	first: int8;
+	second: int8;
+	i: int8;
+
+begin program2;
+
+//User's input
+//x = AH
+stdout.put ("Feed me: ");
+stdin.get(x);
+mov(x, AH);
+
+//y = BH
+stdout.put ("Feed me: ");
+stdin.get(y);
+mov(y, BH);
+
+ifXY:
+	cmp(AH, BH);
+//jl = jump if less than
+//if (x < y) -> xSmallerThany
+jl xSmallerThany;
+//else -> xLargerThany
+jmp xLargerThany;
+//if (x < y)
+xSmallerThany:
+	//stdout.put("x < y");
+	//stdout.put(nl);
+	//first = x
+	mov(AH, first);
+	//stdout.put("first: ");
+	//stdout.put(first);
+	//stdout.put(nl);
+	mov(first, CH);
+	
+	//second = y
+	mov(BH, second);
+	//stdout.put("second: ");
+	//stdout.put(second);
+	//stdout.put(nl);
+	mov(second, DH);
+
+jmp endifXY;
+//if (x > y)
+xLargerThany:
+	//stdout.put("x > y");
+	//stdout.put(nl);
+	//first = y
+	mov(BH, first);
+	//stdout.put("first: ");
+	//stdout.put(first);
+	//stdout.put(nl);
+	mov(first, CH);
+	
+	//second = x
+	mov(AH, second);
+	//stdout.put("second: ");
+	//stdout.put(second);
+	//stdout.put(nl);
+	mov(second, DH);
+	
+jmp endifXY;
+endifXY:
+
+//for( i = 1; i <= second; i++ )
+forLp:
+initalizeforLp: // i = 1;
+	mov(1, i);
+forLpTerminationTest:
+	cmp(i, DH);
+//jnle = jump if not less than or equal
+//if (i ISN'T <= second) -> jump to forLpDone
+jnle forLpDone;
+forLpBody:
+	//printf( "%d", first );
+	stdout.put(first);
+forLpIncrement:
+	inc(i); //i++
+jmp forLpTerminationTest;
+forLpDone:
+
+//printf( "_" );
+stdout.put("_");
+
+//for ( i = 1; i <= second; i++ )
+secondLp:
+initalizeSecondLp: // i = 1;
+	mov(1, i);
+secondLpTerminationTest:
+	cmp(i, DH);
+//jnle = jump if not less than or equal
+//if (i ISN'T <= second) -> jump to forLpDone
+jnle secondLpDone;
+secondLpBody:
+	//printf( "%d", first );
+	stdout.put(second);
+secondLpIncrement:
+	inc(i); //i++
+jmp secondLpTerminationTest;
+secondLpDone:
+
+//printf ( "\n" );
+stdout.put(nl);
+
+end program2;

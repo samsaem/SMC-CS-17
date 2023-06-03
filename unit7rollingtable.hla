@@ -1,0 +1,143 @@
+//File: unit7rollingtable.hla Unit 7 Program 3 Binary Output
+program unit7rollingtable;
+#include ("stdlib.hhf");
+
+static
+startingValue: int8 := 0;
+firstValue:  int8 := 0;
+secondValue:  int8 := 0;
+thirdValue:  int8 := 0;
+
+begin unit7rollingtable;
+
+//User's input	
+stdout.put ("Gimme a starting value: ");
+stdin.get (startingValue);
+
+stdout.put ("Rolling Table", nl);
+
+///////////////////////////////////////////////
+//FIRST ROW
+mov (startingValue, AH);
+mov (AH, firstValue);
+stdout.put (firstValue, ": ");
+//Load into AH flags
+mov (firstValue, AH);
+//Rotate left AH -> double the value 1 time
+ROL (1, AH);
+mov(AH, firstValue);
+stdout.put (firstValue, " ");
+
+//Load into AH flags
+mov (firstValue, AH);
+//Rotate right AH -> divide half 1 time
+ROR (1, AH);
+//Divide another half from ROR
+shr(1, AH);
+mov(AH, firstValue);
+stdout.put (firstValue, " ");
+
+//Load into AH flags
+mov (firstValue, AH);
+//Rotate left AH -> double the value 1 time
+ROL (1, AH);
+//Double 2 times from ROL
+shl(2, AH);
+mov(AH, firstValue);
+stdout.put (firstValue, " ");
+
+//Load into AH flags
+mov (firstValue, AH);
+//Rotate right AH -> divide half one time
+ROR (1, AH);
+//Divide half 3 times from ROR
+shr(3, AH);
+mov(AH, firstValue);
+stdout.put (firstValue, " ");
+
+///////////////////////////////////////////////
+//SECOND ROW
+stdout.newln();
+inc(startingValue);
+mov (startingValue, AH);
+mov (AH,secondValue);
+stdout.put (secondValue, ": ");
+//Load into AH flags
+mov (secondValue, AH);
+//Rotate left AH -> double the value 1 time
+ROL (1, AH);
+mov(AH, secondValue);
+stdout.put (secondValue, " ");
+
+//Load into AH flags
+mov (secondValue, AH);
+//Rotate right AH -> divide half 1 time
+ROR (1, AH);
+//Divide another half from ROR
+shr(1, AH);
+mov(AH, secondValue);
+stdout.put (secondValue, " ");
+
+//Load into AH flags
+mov (secondValue, AH);
+//Rotate left AH -> double the value 1 time
+ROL (1, AH);
+//Double 2 times from ROL
+shl(2, AH);
+//Add 4
+add (4,AH);
+mov(AH, secondValue);
+stdout.put (secondValue, " ");
+
+//Load into AH flags
+mov (secondValue, AH);
+//Rotate right AH -> divide half one time
+ROR (1, AH);
+//Divide half 3 times from ROR
+shr(3, AH);
+mov(AH, secondValue);
+stdout.put (secondValue, " ");
+
+///////////////////////////////////////////////
+//THIRD ROW
+stdout.newln();
+inc(startingValue);
+mov (startingValue, AH);
+mov (AH,thirdValue);
+stdout.put (thirdValue, ": ");
+
+//Load into AH flags
+mov (thirdValue, AH);
+//Rotate left AH -> double the value 1 time
+ROL (1, AH);
+mov(AH, thirdValue);
+stdout.put (thirdValue, " ");
+
+//Load into AH flags
+mov (thirdValue, AH);
+//Rotate right AH -> divide half 1 time
+ROR (1, AH);
+//Divide another half from ROR
+shr(1, AH);
+mov(AH, thirdValue);
+stdout.put (thirdValue, " ");
+
+//Load into AH flags
+mov (thirdValue, AH);
+//Rotate left AH -> double the value 1 time
+ROL (1, AH);
+//Double 2 times from ROL
+shl(2, AH);
+mov(AH, thirdValue);
+stdout.put (thirdValue, " ");
+
+//Load into AH flags
+mov (thirdValue, AH);
+//Rotate right AH -> divide half one time
+ROR (1, AH);
+//Divide half 3 times from ROR
+shr(3, AH);
+mov(AH, thirdValue);
+stdout.put (thirdValue, " ");
+
+end unit7rollingtable;

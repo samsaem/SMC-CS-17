@@ -1,0 +1,120 @@
+// Reference Parameter Template Solution For CS 17 Final 
+// CS 17 Students must use this template as the basis for their solution.  
+// Please look at the two TODO: notes below
+
+program ReferenceProgram ; 
+#include( "stdlib.hhf" ); 
+static 
+	iValue1 : int16 := 0; 
+	iValue2 : int16 := 0; 
+	iValue3 : int16 := 0; 
+// TODO: CS 17 Students add code below to implement this function 
+// Several hints are supplied 
+procedure makeDifference( var i : int16; var j : int16; var k : int16 );@nodisplay; @noframe; 
+static 
+	dReturnAddress : dword; 
+	
+	dEBXRegister: dword:= 0; //preserve EBX
+	dECXRegister: dword:= 0; //preserve ECX
+	dEDXRegister: dword:= 0; //preserve EDX
+	amount: int16 := 0;
+	
+begin makeDifference; 
+	// entry sequence 
+	// preserve registers used 
+	mov(EBX, dEBXRegister);
+	mov(ECX, dECXRegister);
+	mov(EDX, dEDXRegister);
+	
+	pop(dReturnAddress);
+	
+	pop(EBX); // address of iValue3
+	pop(ECX); // address of iValue2
+	pop(EDX); // address of iValue1
+
+	// this is the return address
+	// push back the return address 
+	push( dReturnAddress );
+
+	// preserve registers
+	push(dEDXRegister);
+	push(dECXRegister);
+	push(dEBXRegister);
+
+	// TODO: implement function
+	
+	mov(EBX, dEBXRegister); //address of iValue3
+	mov(ECX, dECXRegister); // address of iValue2
+	mov(EDX, dEDXRegister); // address of iValue1
+	
+	// | EBX = iValue3 | ECX = iValue2 | EDX = iValue1
+	// int amount = *i - *j - *k;
+	mov(0,AX);
+	mov([EDX], AX);
+	add(AX,amount);
+	
+	mov(0,AX);
+	mov([ECX], AX);
+	sub(AX,amount);
+	
+	mov(0,AX);
+	mov([EBX], AX);
+	sub(AX, amount);
+	
+	//stdout.put("testing: ", amount, nl);
+	
+	// PUT amount BACK TO EACH VALUE
+	// *i = amount; //iValue1
+	mov(dEDXRegister, EDX); // iValue2 address
+	mov(amount, AX);
+	mov(AX,[EDX]); 
+	
+	// *j = amount; //iValue2
+	mov(dECXRegister, ECX); // iValue2 address
+	mov(amount, AX);
+	mov(AX,[ECX]); 
+	
+	// *k = amount; //iValue3
+	mov(dEBXRegister, EBX); // iValue3 address
+	mov(amount, AX);
+	mov(AX,[EBX]);
+
+	// restore the registers used
+	pop(EBX);
+	pop(ECX);
+	pop(EDX);
+	ret();
+
+end makeDifference;
+
+begin ReferenceProgram ;
+	stdout.put( "Gimme iValue1:" );
+	stdin.get( iValue1 ); 
+	stdout.put( "Gimme iValue2:" );
+	stdin.get( iValue2 ); 
+	stdout.put( "Gimme iValue3:" );
+	stdin.get( iValue3 ); 
+
+// TODO: push parameters to the function. 
+// These parameters must be passed by-reference. 
+	lea(EAX,iValue1); //get address of iValue1
+	push(EAX);
+	lea(EAX,iValue2); //get address of iValue2
+	push(EAX);
+	lea(EAX,iValue3); //get address of iValue3
+	push(EAX);
+	call makeDifference ; 
+	
+	stdout.put( "after makeDifference!" ); 
+	stdout.newln(); 
+	stdout.put( "iValue1 = " ); 
+	stdout.put( iValue1 ); 
+	stdout.newln(); 
+	stdout.put( "iValue2 = " ); 
+	stdout.put( iValue2 ); 
+	stdout.newln(); 
+	stdout.put( "iValue3 = " ); 
+	stdout.put( iValue3 ); 
+	stdout.newln();
+
+end ReferenceProgram ;

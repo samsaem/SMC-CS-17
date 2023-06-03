@@ -1,0 +1,122 @@
+//File: program9.hla Unit 11 Program 9 hasDuplicates
+program program9;
+#include ("stdlib.hhf");
+
+//Write an HLA Assembly language program that implements a function which correctly identifies 
+//whether two or more parameters have identical values and returns a boolean value in AL
+//Return 1 in AL when two or more parameters are identical; 0 otherwise
+//In order to receive full credit, you should be preventing register corruption
+//by preserving and then restoring the value of any register your function touches
+//This rule applies to every register except for EAX which is being used to pass an answer back to the calling code.
+	
+static
+	x: int16 := 0;
+	y: int16 := 0;
+	z: int16 := 0;
+
+	
+////////////////////////////
+// Function hasDuplicates
+////////////////////////////
+procedure hasDuplicates( x: int16; y: int16; z: int16 ); @nodisplay; @noframe; 
+static	
+	returnAddress: dword;
+	temp: int16;
+begin hasDuplicates;
+
+//entry sequence
+	pop(returnAddress);
+	pop(x);
+	pop(y);
+	pop(z);
+	push(returnAddress);
+	push(EAX); //preserve register
+
+	//BX = x, CX = y, DX = z
+	mov(x, BX);
+	mov(y, CX);
+	mov(z, DX);
+	
+compareXY:
+	cmp(BX, CX);
+//if (x = y)
+je equalXY;
+jmp notequalXY;
+equalXY:
+	mov(1,EAX);
+jmp endcompareXYZ;
+notequalXY:
+	mov(0,EAX);
+jmp endcompareXYZ;
+
+compareYZ:
+	cmp(CX, DX);
+//if (y = z)
+je equalYZ;
+jmp notequalYZ;
+equalYZ:
+	stdout.put("AL = 1");
+	stdout.put(nl);
+jmp endcompareXYZ;
+notequalYZ:
+	stdout.put("AL = 0");
+	stdout.put(nl);
+jmp endcompareXYZ;
+
+compareXZ:
+	cmp(BX, DX);
+//if (x = z)
+je equalXZ;
+jmp notequalXZ;
+equalXZ:
+	stdout.put("AL = 1");
+	stdout.put(nl);
+jmp endcompareXYZ;
+notequalXZ:
+	stdout.put("AL = 0");
+	stdout.put(nl);
+jmp endcompareXYZ;
+
+endcompareXYZ:
+
+//exit sequence
+	pop(EAX);
+	ret();
+	
+end hasDuplicates;
+
+////////// main program //////////////
+begin program9;
+	//x
+	stdout.put("Feed Me x: ");
+	stdin.get(x);
+	stdout.put(nl);
+	//y
+	stdout.put("Feed Me y: ");
+	stdin.get(y);
+	stdout.put(nl);
+	//z
+	stdout.put("Feed Me z: ");
+	stdin.get(z);
+	stdout.put(nl);
+	push(x);
+	push(y);
+	push(z);
+	call hasDuplicates;
+	cmp(EAX,1);
+	je isEqual;
+	jmp notEqual;
+isEqual:
+	stdout.put("AL = ");
+	stdout.put(EAX);
+	stdout.put(nl);
+jmp endEqual;
+notEqual:
+	stdout.put("AL = ");
+	stdout.puti32(EAX);
+	stdout.put(nl);
+jmp endEqual;
+endEqual:
+	
+
+end program9;

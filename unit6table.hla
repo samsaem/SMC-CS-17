@@ -1,0 +1,62 @@
+//File: unit6table.hla Unit 6 Program 2 Table
+program unit6table;
+#include ("stdlib.hhf");
+static
+//Initialize value
+startingValue: int8 := 0;
+nextValue: int8 := 0;
+
+begin unit6table;
+
+//User's input
+stdout.put ("Gimme a starting value: ");
+stdin.get (startingValue);
+
+//LINE 1
+stdout.put (startingValue, " ", startingValue, " ", startingValue, " ", startingValue, " ", startingValue, nl);
+
+//LINE 2
+//passing startingValue to nextValue
+mov(startingValue, al);
+mov(al, nextValue);
+//increment nextValue
+inc (nextValue);
+stdout.put (nextValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+stdout.put (" ", startingValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+stdout.newln();
+
+//LINE 3
+inc (nextValue);
+stdout.put (nextValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+stdout.put (" ", startingValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+stdout.newln();
+
+//LINE 4
+inc (nextValue);
+stdout.put (nextValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+stdout.put (" ", startingValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+inc (nextValue);
+stdout.put (" ", nextValue);
+stdout.newln();
+
+//LINE 5
+stdout.put (startingValue, " ", startingValue, " ", startingValue, " ", startingValue, " ", startingValue, nl);
+
+
+end unit6table;
